@@ -5,12 +5,12 @@
 
 ### 1-2
 1. 필수 라이브러리 다운로드
-```
-npm install expresssocket.io
-npm install -D prettier nodemon
-```
+    ```
+    npm install expresssocket.io
+    npm install -D prettier nodemon
+    ```
 2. 프리티어 세팅
-- .prettierrc 파일 생성 
+   - .prettierrc 파일 생성 
 
 3. express 서버 세팅
 4. socket.io 세팅
