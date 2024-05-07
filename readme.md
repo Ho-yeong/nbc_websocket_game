@@ -3,16 +3,12 @@
 
 ---
 
-### 1-2
-1. 필수 라이브러리 다운로드
-    ```
-    npm install expresssocket.io
-    npm install -D prettier nodemon
-    ```
-2. 프리티어 세팅
-   - .prettierrc 파일 생성 
-
-3. express 서버 세팅
-4. socket.io 세팅
-
- 
+### 1-3
+1. 데이터 테이블 로드
+   - 파일 시스템 사용
+2. 유저 접속 관리
+   - 유저 모델 생성
+3. 커넥션 핸들러
+   - 연결 시 우선으로 처리되어야 할 항목들
+4. 이벤트 핸들러
+   - 게임 컨텐츠
