@@ -12,5 +12,7 @@ npm install -D prettier nodemon
 2. 프리티어 세팅
 - .prettierrc 파일 생성 
 
+3. express 서버 세팅
+4. socket.io 세팅
 
  
