@@ -1,6 +1,9 @@
+import { sendEvent } from './Socket.js';
+
 class Score {
   score = 0;
   HIGH_SCORE_KEY = 'highScore';
+  stageChange = true;
 
   constructor(ctx, scaleRatio) {
     this.ctx = ctx;
@@ -9,11 +12,16 @@ class Score {
   }
 
   update(deltaTime) {
-    this.score += deltaTime * 0.01;
+    this.score += deltaTime * 0.001;
+    if (Math.floor(this.score) === 100 && this.stageChange) {
+      this.stageChange = false;
+      sendEvent(11, { currentStage: 1000, nextStage: 1001 });
+    }
   }
 
   getItem(itemId) {
-    this.score += 100;
+    // 아이템 획득시 점수 변화
+    this.score += 0;
   }
 
   reset() {
