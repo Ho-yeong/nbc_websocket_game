@@ -15,7 +15,7 @@ class Score {
     this.score += deltaTime * 0.001;
     if (Math.floor(this.score) === 100 && this.stageChange) {
       this.stageChange = false;
-      sendEvent(11, { currentStage: 1000, nextStage: 1001 });
+      sendEvent(11, { currentStage: 1000, targetStage: 1001 });
     }
   }
 
