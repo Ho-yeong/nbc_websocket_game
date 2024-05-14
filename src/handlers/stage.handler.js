@@ -30,11 +30,11 @@ export const moveStageHandler = (userId, payload) => {
 
   // 게임 에셋에서 다음 스테이지의 존재 여부 확인
   const { stages } = getGameAssets();
-  if (!stages.data.some((stage) => stage.id === payload.nextStage)) {
-    return { status: 'fail', message: 'Next stage does not exist' };
+  if (!stages.data.some((stage) => stage.id === payload.targetStage)) {
+    return { status: 'fail', message: 'Target stage does not exist' };
   }
 
   // 유저의 다음 스테이지 정보 업데이트 + 현재 시간
-  setStage(userId, payload.nextStage, serverTime);
+  setStage(userId, payload.targetStage, serverTime);
   return { status: 'success' };
 };
