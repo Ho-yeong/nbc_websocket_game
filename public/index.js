@@ -5,6 +5,7 @@ import Score from './Score.js';
 import ItemController from './ItemController.js';
 import './Socket.js';
 import { sendEvent } from './Socket.js';
+import stageTable from './assets/stage.json' with { type: 'json' };
 
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
@@ -105,7 +106,7 @@ function createSprites() {
 
   itemController = new ItemController(ctx, itemImages, scaleRatio, GROUND_SPEED);
 
-  score = new Score(ctx, scaleRatio);
+  score = new Score(ctx, scaleRatio, stageTable.data);
 }
 
 function getScaleRatio() {
@@ -214,6 +215,7 @@ function gameLoop(currentTime) {
   if (!gameover && cactiController.collideWith(player)) {
     gameover = true;
     score.setHighScore();
+    sendEvent(3, { timestamp: Date.now(), score: Math.floor(score.score) });
     setupGameReset();
   }
   const collideWithItem = itemController.collideWith(player);
