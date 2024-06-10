@@ -1,10 +1,10 @@
 import { getGameAssets } from '../init/assets.js';
 
 // 스테이지 지속 시간을 기반으로 총 점수를 계산하는 함수
-const calculateTotalScore = (stages, gameEndTime, isMoveStage) => {
+const calculateTotalScore = (stages, gameEndTime, isMoveStage, userItems) => {
   let totalScore = 0;
 
-  const { stages: stageData } = getGameAssets();
+  const { stages: stageData, items: itemData } = getGameAssets();
   const stageTable = stageData.data;
 
   stages.forEach((stage, index) => {
@@ -18,22 +18,27 @@ const calculateTotalScore = (stages, gameEndTime, isMoveStage) => {
     }
     let stageDuration = (stageEndTime - stage.timestamp) / 1000; // 스테이지 지속 시간 (초 단위)
 
-    // 현재 스테이지의 scorePerSecond 를 가져옴
+    // 현재 스테이지의 scorePerSecond를 가져옴
     const stageInfo = stageTable.find((s) => s.id === stage.id);
     const scorePerSecond = stageInfo ? stageInfo.scorePerSecond : 1;
 
     if (!isMoveStage && index === stages.length - 1) {
       // 마지막 스테이지의 경우 버림 처리
-      console.log(stageDuration);
-      console.log(`gameEndTime: ${gameEndTime}`);
-      console.log(`stage: ${stage.timestamp}`);
       stageDuration = Math.floor(stageDuration);
     } else {
       // 중간 스테이지의 경우 반올림 처리
       stageDuration = Math.round(stageDuration);
     }
 
-    totalScore += stageDuration * scorePerSecond; // 각 스테이지의 scorePerSecond 를 반영하여 점수 계산
+    totalScore += stageDuration * scorePerSecond; // 각 스테이지의 scorePerSecond를 반영하여 점수 계산
+  });
+
+  // 아이템 획득 점수 추가
+  userItems.forEach((userItem) => {
+    const item = itemData.data.find((item) => item.id === userItem.id);
+    if (item) {
+      totalScore += item.score;
+    }
   });
 
   return totalScore;

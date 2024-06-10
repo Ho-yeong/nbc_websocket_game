@@ -7,11 +7,13 @@ class Score {
   currentStage = 1000; // 현재 스테이지 ID
   stageChanged = {}; // 스테이지 변경 확인용 플래그
 
-  constructor(ctx, scaleRatio, stageTable) {
+  constructor(ctx, scaleRatio, stageTable, itemTable, itemController) {
     this.ctx = ctx;
     this.canvas = ctx.canvas;
     this.scaleRatio = scaleRatio;
     this.stageTable = stageTable; // 외부에서 전달된 스테이지 테이블 사용
+    this.itemTabel = itemTable;
+    this.itemController = itemController; // itemController 를 저장
 
     // 모든 스테이지에 대해 stageChanged 초기화
     this.stageTable.forEach((stage) => {
@@ -56,6 +58,11 @@ class Score {
         // 서버로 이벤트 전송
         sendEvent(11, { currentStage: previousStage, targetStage: this.currentStage });
 
+        // 아이템 컨트롤러에 현재 스테이지 설정
+        if (this.itemController) {
+          this.itemController.setCurrentStage(this.currentStage);
+        }
+
         // 스테이지 변경 후 반복문 종료
         break;
       }
@@ -63,7 +70,11 @@ class Score {
   }
 
   getItem(itemId) {
-    this.score += 0;
+    const itemInfo = this.itemTabel.find((item) => item.id === itemId);
+    if (itemInfo) {
+      this.score += itemInfo.score;
+      sendEvent(21, { itemId, timestamp: Date.now() });
+    }
   }
 
   reset() {
@@ -75,6 +86,11 @@ class Score {
     Object.keys(this.stageChanged).forEach((key) => {
       this.stageChanged[key] = false;
     });
+
+    // 아이템 컨트롤러에 현재 스테이지 설정
+    if (this.itemController) {
+      this.itemController.setCurrentStage(this.currentStage);
+    }
   }
 
   setHighScore() {

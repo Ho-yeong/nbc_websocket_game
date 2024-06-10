@@ -1,6 +1,7 @@
 import { getStage, setStage } from '../models/stage.model.js';
 import { getGameAssets } from '../init/assets.js';
 import calculateTotalScore from '../utils/calculateTotalScore.js';
+import { getUserItems } from '../models/item.model.js';
 
 export const moveStageHandler = (userId, payload) => {
   // 유저의 현재 스테이지 배열을 가져오고, 최대 스테이지 ID를 찾는다.
@@ -8,8 +9,6 @@ export const moveStageHandler = (userId, payload) => {
   if (!currentStages.length) {
     return { status: 'fail', message: 'No stages found for user' };
   }
-
-  console.log(payload);
 
   // 오름차순 정렬 후 가장 큰 스테이지 ID 확인 = 가장 상위의 스테이지 = 현재 스테이지
   currentStages.sort((a, b) => a.id - b.id);
@@ -37,9 +36,10 @@ export const moveStageHandler = (userId, payload) => {
 
   // 점수 검증
   const serverTime = Date.now();
-  const totalScore = calculateTotalScore(currentStages, serverTime, true);
+  const userItems = getUserItems(userId);
+  const totalScore = calculateTotalScore(currentStages, serverTime, true, userItems);
 
-  if (targetStageInfo.score !== totalScore) {
+  if (targetStageInfo.score > totalScore) {
     return { status: 'fail', message: 'Invalid elapsed time' };
   }
 
