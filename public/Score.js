@@ -3,7 +3,7 @@ import { sendEvent } from './Socket.js';
 class Score {
   score = 0;
   scoreIncrement = 0;
-  HIGH_SCORE_KEY = 'highScore';
+  highScore = 0;
   currentStage = 1000; // 현재 스테이지 ID
   stageChanged = {}; // 스테이지 변경 확인용 플래그
 
@@ -93,19 +93,11 @@ class Score {
     }
   }
 
-  setHighScore() {
-    const highScore = Number(localStorage.getItem(this.HIGH_SCORE_KEY));
-    if (this.score > highScore) {
-      localStorage.setItem(this.HIGH_SCORE_KEY, Math.floor(this.score));
-    }
-  }
-
-  getScore() {
-    return this.score;
+  setHighScore(score) {
+    this.highScore = score;
   }
 
   draw() {
-    const highScore = Number(localStorage.getItem(this.HIGH_SCORE_KEY));
     const y = 20 * this.scaleRatio;
 
     const fontSize = 20 * this.scaleRatio;
@@ -116,7 +108,7 @@ class Score {
     const highScoreX = scoreX - 125 * this.scaleRatio;
 
     const scorePadded = Math.floor(this.score).toString().padStart(6, 0);
-    const highScorePadded = highScore.toString().padStart(6, 0);
+    const highScorePadded = this.highScore.toString().padStart(6, 0);
 
     this.ctx.fillText(scorePadded, scoreX, y);
     this.ctx.fillText(`HI ${highScorePadded}`, highScoreX, y);

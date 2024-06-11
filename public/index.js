@@ -4,7 +4,7 @@ import CactiController from './CactiController.js';
 import Score from './Score.js';
 import ItemController from './ItemController.js';
 import './Socket.js';
-import { sendEvent } from './Socket.js';
+import { sendEvent, setScoreInstance } from './Socket.js';
 import itemData from './assets/item.json' with { type: 'json' };
 import stageData from './assets/stage.json' with { type: 'json' };
 import itemUnlockData from './assets/item_unlock.json' with { type: 'json' };
@@ -112,7 +112,9 @@ function createSprites() {
     ITEM_UNLOCK_CONFIG,
   );
 
-  score = new Score(ctx, scaleRatio, STAGE_DATA, ITEM_CONFIG, itemController); // itemController를 Score에 전달
+  score = new Score(ctx, scaleRatio, STAGE_DATA, ITEM_CONFIG, itemController); // itemController 를 Score 에 전달
+
+  setScoreInstance(score);
 }
 
 function getScaleRatio() {
@@ -221,7 +223,6 @@ function gameLoop(currentTime) {
 
   if (!gameover && cactiController.collideWith(player)) {
     gameover = true;
-    score.setHighScore();
     sendEvent(3, { timestamp: Date.now(), score: Math.floor(score.score) });
     setupGameReset();
   }
